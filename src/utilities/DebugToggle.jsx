@@ -9,9 +9,13 @@ const DebugToggle = () => {
 	}
 
 	return (
-		<div>
-			<p>Debug Mode is: {isDebugMode ? 'ON' : 'OFF'}</p>
-			<button onClick={toggleDebugMode}>Toggle Debug Mode</button>
+		<div className='flex flex-col gap-3 my-4'>
+			<button
+				className='btn btn-md ml-auto rounded-r-none'
+				onClick={toggleDebugMode}
+			>
+				Toggle Debug Mode
+			</button>
 		</div>
 	)
 }

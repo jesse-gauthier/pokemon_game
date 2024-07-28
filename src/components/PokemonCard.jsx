@@ -37,21 +37,18 @@ const PokemonCard = ({ pokemon }) => {
 				alt={pokemon.name}
 			/>
 			<div className='flex justify-evenly'>
-				{isCaught ? (
-					<Link
-						to={`/pokemon/${pokemon.id}`}
-						className='btn self-center btn-success uppercase'
-					>
-						View
-					</Link>
-				) : (
-					<button
-						onClick={handleCatch}
-						className='btn self-center btn-error btn-outline uppercase'
-					>
-						Catch
-					</button>
-				)}
+				<button
+					onClick={handleCatch}
+					className='btn self-center btn-error btn-outline uppercase'
+				>
+					Catch
+				</button>
+				<Link
+					to={`/pokemon/${pokemon.id}`}
+					className='btn self-center btn-success uppercase'
+				>
+					View
+				</Link>
 			</div>
 		</div>
 	)

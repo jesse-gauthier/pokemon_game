@@ -15,7 +15,6 @@ const SideHeader = () => {
 	return (
 		<div className='w-[15%] h-screen bg-red-200'>
 			<DebugToggle />
-			<h1 className='text-center text-3xl font-bold my-8'>Pokemon List</h1>
 			<header>
 				{isDebugMode && (
 					<div className='flex flex-col gap-3'>
