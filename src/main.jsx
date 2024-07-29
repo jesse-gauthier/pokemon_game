@@ -5,9 +5,7 @@ import './index.css'
 import { DebugProvider } from './utilities/DebugContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-	<React.StrictMode>
-		<DebugProvider>
-			<App />
-		</DebugProvider>
-	</React.StrictMode>
+	<DebugProvider>
+		<App />
+	</DebugProvider>
 )

@@ -1,4 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
+import pokemonFetch from '../utilities/PokemonFetch'
 import PokemonCard from './PokemonCard'
 
 class Pokemon {
@@ -11,42 +14,37 @@ class Pokemon {
 	}
 }
 
-const getRandomOffset = () => {
-	return Math.floor(Math.random() * 100) + 1
+const getRandomNumber = (min, max) => {
+	return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-const PokemonComponent = ({ maxPokemon, saveToLocal }) => {
+const fetchRandomPokemon = async () => {
+	const randomId = getRandomNumber(1, 500)
+	const data = await pokemonFetch(randomId)
+	return new Pokemon(
+		data.name,
+		data.sprites.other.dream_world.front_default,
+		data.id,
+		data.base_experience
+	)
+}
+
+const PokemonComponent = ({ saveToLocal }) => {
 	const [listOfPokemon, setListOfPokemon] = useState([])
 
-	const fetchesPokemon = async (offset) => {
-		const url = `https://pokeapi.co/api/v2/pokemon/?limit=${maxPokemon}&offset=${offset}`
+	const fetchMultiplePokemon = async () => {
+		const numberOfFetches = getRandomNumber(1, 10)
 		try {
-			const response = await fetch(url)
-			if (!response.ok) {
-				throw new Error(`Response status: ${response.status}`)
-			}
-
-			const data = await response.json()
 			const fetchedPokemon = await Promise.all(
-				data.results.map(async (pokemon) => {
-					const pokemonDetailResponse = await fetch(pokemon.url)
-					const pokemonDetail = await pokemonDetailResponse.json()
-					return new Pokemon(
-						pokemon.name,
-						pokemonDetail.sprites.other.dream_world.front_default,
-						pokemonDetail.id,
-						pokemonDetail.base_experience
-					)
-				})
+				Array.from({ length: numberOfFetches }, () => fetchRandomPokemon())
 			)
-
-			setListOfPokemon(fetchedPokemon)
 
 			if (saveToLocal) {
 				const timestamp = Date.now()
 				localStorage.setItem('pokemonData', JSON.stringify(fetchedPokemon))
 				localStorage.setItem('pokemonTimestamp', timestamp)
 			}
+			setListOfPokemon(fetchedPokemon)
 		} catch (error) {
 			console.error(error.message)
 		}
@@ -75,18 +73,28 @@ const PokemonComponent = ({ maxPokemon, saveToLocal }) => {
 
 		const main = async () => {
 			if (!checkLocalStorage()) {
-				const randomOffset = getRandomOffset()
-				await fetchesPokemon(randomOffset)
+				await fetchMultiplePokemon()
 				console.log('Pokemon fetched')
-				console.log(listOfPokemon)
 			} else {
 				console.log('Loaded from localStorage')
-				console.log(listOfPokemon)
 			}
 		}
 
 		main()
 	}, [])
+
+	const handleCatchRelease = (pokemonId) => {
+		setListOfPokemon((prevList) =>
+			prevList.filter((pokemon) => pokemon.id !== pokemonId)
+		)
+
+		// Also update local storage to remove the Pokémon from "pokemonData"
+		const storedPokemon = JSON.parse(localStorage.getItem('pokemonData')) || []
+		const updatedPokemon = storedPokemon.filter(
+			(pokemon) => pokemon.id !== pokemonId
+		)
+		localStorage.setItem('pokemonData', JSON.stringify(updatedPokemon))
+	}
 
 	return (
 		<div
@@ -94,7 +102,11 @@ const PokemonComponent = ({ maxPokemon, saveToLocal }) => {
 			id='pokemon-container'
 		>
 			{listOfPokemon.map((pokemon) => (
-				<PokemonCard key={pokemon.id} pokemon={pokemon} />
+				<PokemonCard
+					key={pokemon.id}
+					pokemon={pokemon}
+					onCatchRelease={handleCatchRelease}
+				/>
 			))}
 		</div>
 	)

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import DebugToggle from '../utilities/DebugToggle'
 import PokemonComponent from '../components/PokemonComponent'
 
-const getRandomNumber = () => {
+const getNumberOfWildPokemon = () => {
 	const storedTimestamp = localStorage.getItem('pokemonTimestamp')
 	const twelveHours = 12 * 60 * 60 * 1000
 
@@ -21,11 +20,11 @@ const getRandomNumber = () => {
 		}
 	}
 
-	return Math.floor(Math.random() * 7) + 1
+	return '...'
 }
 
 const Home = () => {
-	const maxPokemon = getRandomNumber()
+	const maxPokemon = getNumberOfWildPokemon()
 	const [countdown, setCountdown] = useState('')
 
 	useEffect(() => {
@@ -61,9 +60,8 @@ const Home = () => {
 	return (
 		<div className='pb-4'>
 			<div className='border-b-4 border-[#d2432e40] py-6'>
-				<DebugToggle />
-				<div className='flex justify-between'>
-					<h2 className='text-center text-4xl'>
+				<div className='my-3 md:flex justify-between'>
+					<h2 className='text-center text-2xl md:text-4xl'>
 						{maxPokemon} Wild Pokemon Appeared
 					</h2>
 					<span className='block text-lg text-gray-500 self-center'>
@@ -71,7 +69,7 @@ const Home = () => {
 					</span>
 				</div>
 			</div>
-			<PokemonComponent maxPokemon={maxPokemon} saveToLocal='true' />
+			<PokemonComponent saveToLocal='true' />
 		</div>
 	)
 }
