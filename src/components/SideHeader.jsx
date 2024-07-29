@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { useContext } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { DebugContext } from '../utilities/DebugContext'
 import DebugToggle from '../utilities/DebugToggle'
 
@@ -36,12 +35,21 @@ const SideHeader = () => {
 				<nav>
 					<ul className='flex flex-col'>
 						<li className='flex flex-wrap gap-y-3 justify-end py-2'>
-							<Link className='btn w-[90%] rounded-r-none' to='/'>
+							<NavLink
+								className='btn w-[90%] rounded-r-none'
+								to='/'
+								activeClassName='bg-[#5E1743]'
+								exact
+							>
 								Wild Pokemon
-							</Link>
-							<Link className='btn w-[90%] rounded-r-none' to='/caught_pokemon'>
+							</NavLink>
+							<NavLink
+								className='btn w-[90%] rounded-r-none'
+								to='/caught_pokemon'
+								activeClassName='bg-[#5E1743]'
+							>
 								Caught Pokemon
-							</Link>
+							</NavLink>
 						</li>
 					</ul>
 				</nav>

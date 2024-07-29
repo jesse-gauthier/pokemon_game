@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.active {
+	background-color: #5e1743;
+	color: white;
+}
+
+.active:hover {
+	background-color: #2b0a1e;
+	color: white;
+}
