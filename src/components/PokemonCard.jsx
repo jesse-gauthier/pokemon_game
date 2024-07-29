@@ -24,12 +24,12 @@ const PokemonCard = ({ pokemon }) => {
 	}
 
 	return (
-		<div className='border-[#f2c444] border-[13px] p-2 rounded-xl flex flex-col'>
+		<div className='border-[#FFCC5C] border-[13px] p-2 rounded-xl flex flex-col'>
 			<div className='flex justify-between'>
 				<h3 className='capitalize text-2xl font-bold self-center'>
 					{pokemon.name}
 				</h3>
-				<p className='text-[#d2432e] font-bold self-center'>{pokemon.xp} HP</p>
+				<p className='text-[#FF6F61] font-bold self-center'>{pokemon.xp} HP</p>
 			</div>
 			<img
 				className='w-[80%] h-[80%] object-contain my-3 mx-auto'
@@ -39,7 +39,9 @@ const PokemonCard = ({ pokemon }) => {
 			<div className='flex justify-evenly'>
 				<button
 					onClick={handleCatch}
-					className='btn self-center bg-[#5E1743] text-white btn-outline uppercase'
+					className={`btn self-center btn-outline uppercase ${
+						isCaught ? 'bg-[#E6A0C4]  text-black' : 'bg-[#5E1743] text-white'
+					}`}
 				>
 					{isCaught ? 'release' : 'catch'}
 				</button>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import DebugToggle from '../utilities/DebugToggle'
 import PokemonComponent from '../components/PokemonComponent'
 
 const getRandomNumber = () => {
@@ -58,14 +59,17 @@ const Home = () => {
 	}, [])
 
 	return (
-		<div className='py-4'>
-			<div className='flex justify-between border-b-4 border-[#d2432e40] py-6'>
-				<h2 className='text-center text-4xl my-2'>
-					{maxPokemon} Wild Pokemon Appeared
-				</h2>
-				<span className='block text-lg text-gray-500 self-center'>
-					New Pokemon Appear In {countdown}
-				</span>
+		<div className='pb-4'>
+			<div className='border-b-4 border-[#d2432e40] py-6'>
+				<DebugToggle />
+				<div className='flex justify-between'>
+					<h2 className='text-center text-4xl'>
+						{maxPokemon} Wild Pokemon Appeared
+					</h2>
+					<span className='block text-lg text-gray-500 self-center'>
+						New Pokemon Appear In {countdown}
+					</span>
+				</div>
 			</div>
 			<PokemonComponent maxPokemon={maxPokemon} saveToLocal='true' />
 		</div>
