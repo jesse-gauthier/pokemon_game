@@ -20,7 +20,7 @@ const PokemonCard = ({ pokemon, onCatchRelease }) => {
 				src={pokemon.img}
 				alt={pokemon.name}
 			/>
-			<div className='flex flex-wrap justify-evenly gap-y-2'>
+			<div className='flex flex-wrap md:flex-nowrap justify-evenly gap-y-2'>
 				<CatchButton pokemon={pokemon} onCatchRelease={onCatchRelease} />
 				<Link
 					to={`/pokemon/${pokemon.id}`}

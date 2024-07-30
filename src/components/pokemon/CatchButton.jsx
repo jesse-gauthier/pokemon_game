@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const CatchButton = ({ pokemon, onCatchRelease }) => {
 	const [isCaught, setIsCaught] = useState(false)
+	const [isHolding, setIsHolding] = useState(false)
+	const [progress, setProgress] = useState(0)
+	const holdTimeout = useRef(null)
+	const progressInterval = useRef(null)
 
 	useEffect(() => {
 		const caughtPokemon =
@@ -12,7 +16,7 @@ const CatchButton = ({ pokemon, onCatchRelease }) => {
 		}
 	}, [pokemon.id])
 
-	const handleCatch = () => {
+	const handleCatchRelease = () => {
 		const caughtPokemon =
 			JSON.parse(localStorage.getItem('caughtPokemon')) || []
 
@@ -38,14 +42,51 @@ const CatchButton = ({ pokemon, onCatchRelease }) => {
 		}
 	}
 
+	const startHold = () => {
+		setIsHolding(true)
+		setProgress(0)
+
+		progressInterval.current = setInterval(() => {
+			setProgress((prev) => {
+				if (prev < 100) {
+					return prev + 2 // Progress bar increases over 5 seconds (5000ms / 50ms = 100 steps)
+				} else {
+					clearInterval(progressInterval.current)
+					return prev
+				}
+			})
+		}, 55) // Progress updates every 100ms
+
+		holdTimeout.current = setTimeout(() => {
+			handleCatchRelease()
+			clearInterval(progressInterval.current)
+			setIsHolding(false)
+		}, 2800)
+	}
+
+	const cancelHold = () => {
+		clearTimeout(holdTimeout.current)
+		clearInterval(progressInterval.current)
+		setIsHolding(false)
+		setProgress(0)
+	}
+
 	return (
 		<button
-			onClick={handleCatch}
-			className={`btn self-center btn-outline capitalize w-[100%] md:w-[43%] text-lg font-normal ${
-				isCaught ? 'bg-[#f3701b] text-black' : 'bg-[white] text-black'
+			onMouseDown={startHold}
+			onMouseUp={cancelHold}
+			onMouseLeave={cancelHold}
+			className={`relative btn self-center btn-outline capitalize w-1/2 text-lg font-normal ${
+				isCaught ? 'bg-[#f3701b] text-black' : 'bg-white text-black'
 			}`}
 		>
-			{isCaught ? 'release' : 'catch'}
+			<span className='relative z-10'>{isCaught ? 'Release' : 'Catch'}</span>
+			{isHolding && (
+				<div
+					className='absolute top-0 left-0 h-full bg-blue-500 opacity-50'
+					style={{ width: `${progress}%` }}
+				/>
+			)}
 		</button>
 	)
 }
