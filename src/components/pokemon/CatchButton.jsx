@@ -83,7 +83,7 @@ const CatchButton = ({ pokemon, onCatchRelease }) => {
 			<span className='relative z-10'>{isCaught ? 'Release' : 'Catch'}</span>
 			{isHolding && (
 				<div
-					className='absolute top-0 left-0 h-full bg-blue-500 opacity-50'
+					className='absolute top-0 left-0 h-full bg-[#ff6f61] opacity-50'
 					style={{ width: `${progress}%` }}
 				/>
 			)}
