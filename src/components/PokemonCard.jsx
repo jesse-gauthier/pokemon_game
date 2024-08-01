@@ -2,7 +2,7 @@
 
 import { Link } from 'react-router-dom'
 import CatchButton from './pokemon/CatchButton'
-const PokemonCard = ({ pokemon, onCatchRelease }) => {
+const PokemonCard = ({ pokemon, onCatchRelease, setPokemonCatch }) => {
 	return (
 		<div
 			className={`border-[#FFCC5C] border-[13px] p-2 rounded-xl flex flex-col`}
@@ -21,7 +21,11 @@ const PokemonCard = ({ pokemon, onCatchRelease }) => {
 				alt={pokemon.name}
 			/>
 			<div className='flex flex-wrap md:flex-nowrap justify-evenly gap-y-2'>
-				<CatchButton pokemon={pokemon} onCatchRelease={onCatchRelease} />
+				<CatchButton
+					pokemon={pokemon}
+					onCatchRelease={onCatchRelease}
+					setPokemonCatch={setPokemonCatch}
+				/>
 				<Link
 					to={`/pokemon/${pokemon.id}`}
 					className={`bg-[#70c1b3] text-black btn self-center btn-outline capitalize md:w-[43%] w-[100%] text-lg font-normal`}

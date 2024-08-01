@@ -32,6 +32,7 @@ const PokemonComponent = ({
 	saveToLocal,
 	checksForWildPokemon,
 	isCountDownExpired,
+	setPokemonCatch,
 }) => {
 	const [listOfWildPokemon, setListOfWildPokemon] = useState([])
 
@@ -111,6 +112,7 @@ const PokemonComponent = ({
 					key={pokemon.id}
 					pokemon={pokemon}
 					onCatchRelease={handlesRelease}
+					setPokemonCatch={setPokemonCatch}
 				/>
 			))}
 		</div>

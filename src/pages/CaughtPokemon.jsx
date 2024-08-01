@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react'
 import PokemonCard from '../components/PokemonCard'
 
-const CaughtPokemon = () => {
+const CaughtPokemon = ({ usePokemonCatch }) => {
 	const [caughtPokemon, setCaughtPokemon] = useState([])
 
 	useEffect(() => {
@@ -27,6 +29,7 @@ const CaughtPokemon = () => {
 							key={pokemon.id}
 							pokemon={pokemon}
 							onCatchRelease={handleCatchRelease}
+							usePokemonCatch={usePokemonCatch}
 						/>
 					))
 				) : (

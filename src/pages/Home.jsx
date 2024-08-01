@@ -37,6 +37,7 @@ const getNumberOfWildPokemon = () => {
 const Home = () => {
 	const maxPokemon = getNumberOfWildPokemon()
 	const [countdown, setCountdown] = useState('')
+	const [pokemonCatch, setPokemonCatch] = useState({})
 
 	useEffect(() => {
 		const calculateCountdown = () => {
@@ -83,7 +84,24 @@ const Home = () => {
 				saveToLocal='true'
 				checksForWildPokemon={checksForWildPokemon()}
 				isCountDownExpired={isCountDownExpired()}
+				setPokemonCatch={setPokemonCatch}
 			/>
+
+			<dialog id='success' className='modal'>
+				<div className='modal-box'>
+					<div className='modal-action m-0'>
+						<form method='dialog'>
+							<button className='btn bg-[#2b0a1e] text-white'>Close</button>
+						</form>
+					</div>
+					<img className='mx-auto my-2' src={pokemonCatch.img} alt='' />
+
+					<p className='py-4 capitalize text-center text-2xl'>
+						Congrats, you caught{' '}
+						<span className='font-bold'>{pokemonCatch.name}!</span>
+					</p>
+				</div>
+			</dialog>
 		</div>
 	)
 }
