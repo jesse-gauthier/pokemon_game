@@ -31,6 +31,7 @@ const CatchButton = ({ pokemon, onCatchRelease }) => {
 			const updatedCaughtPokemon = caughtPokemon.filter(
 				(p) => p.id !== pokemon.id
 			)
+			console.log(updatedCaughtPokemon)
 			localStorage.setItem(
 				'caughtPokemon',
 				JSON.stringify(updatedCaughtPokemon)

@@ -10,9 +10,9 @@ const CaughtPokemon = () => {
 		setCaughtPokemon(storedCaughtPokemon)
 	}, [])
 
-	const handleCatchRelease = (updatedCaughtPokemon) => {
-		setCaughtPokemon(updatedCaughtPokemon)
-		localStorage.setItem('caughtPokemon', JSON.stringify(updatedCaughtPokemon))
+	const handleCatchRelease = () => {
+		const caughtPokemon = JSON.parse(localStorage.getItem('caughtPokemon'))
+		setCaughtPokemon(caughtPokemon)
 	}
 
 	return (
