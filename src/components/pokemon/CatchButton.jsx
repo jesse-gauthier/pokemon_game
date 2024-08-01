@@ -11,14 +11,20 @@ const CatchButton = ({ pokemon, onCatchRelease }) => {
 	useEffect(() => {
 		const caughtPokemon =
 			JSON.parse(localStorage.getItem('caughtPokemon')) || []
-		if (caughtPokemon.some((p) => p.id === pokemon.id)) {
+		if (
+			Array.isArray(caughtPokemon) &&
+			caughtPokemon.some((p) => p.id === pokemon.id)
+		) {
 			setIsCaught(true)
 		}
 	}, [pokemon.id])
 
 	const handleCatchRelease = () => {
-		const caughtPokemon =
-			JSON.parse(localStorage.getItem('caughtPokemon')) || []
+		let caughtPokemon = JSON.parse(localStorage.getItem('caughtPokemon')) || []
+
+		if (!Array.isArray(caughtPokemon)) {
+			caughtPokemon = []
+		}
 
 		if (isCaught) {
 			// Remove the Pokémon from caughtPokemon array
@@ -37,7 +43,7 @@ const CatchButton = ({ pokemon, onCatchRelease }) => {
 				caughtPokemon.push(pokemon)
 				localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon))
 				setIsCaught(true)
-				onCatchRelease(caughtPokemon)
+				onCatchRelease(pokemon.id)
 			}
 		}
 	}
@@ -55,7 +61,7 @@ const CatchButton = ({ pokemon, onCatchRelease }) => {
 					return prev
 				}
 			})
-		}, 55) // Progress updates every 100ms
+		}, 55) // Progress updates every 55ms
 
 		holdTimeout.current = setTimeout(() => {
 			handleCatchRelease()

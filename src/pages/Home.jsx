@@ -1,26 +1,32 @@
 import { useState, useEffect } from 'react'
 import WildPokemon from '../components/WildPokemon'
 
-const getNumberOfWildPokemon = () => {
+const isCountDownExpired = () => {
 	const storedTimestamp = localStorage.getItem('pokemonTimestamp')
 	const twelveHours = 12 * 60 * 60 * 1000
+	const currentTime = Date.now()
+	const expirationTime = parseInt(storedTimestamp, 10) + twelveHours
 
-	if (storedTimestamp) {
-		const currentTime = Date.now()
-		const expirationTime = parseInt(storedTimestamp, 10) + twelveHours
-
-		if (currentTime < expirationTime) {
-			const storedPokemon = localStorage.getItem('wildPokemon')
-			if (storedPokemon) {
-				const pokemonList = JSON.parse(storedPokemon)
-				if (pokemonList.length > 0) {
-					return pokemonList.length
-				}
-			}
-		}
+	if (currentTime < expirationTime) {
+		return false
+	} else {
+		return true
 	}
+}
 
-	return '...'
+const checksForWildPokemon = () => {
+	return localStorage.getItem('wildPokemon')
+}
+
+const getNumberOfWildPokemon = () => {
+	const isCountDown = isCountDownExpired()
+	const wildFetchedPokemon = checksForWildPokemon()
+
+	if (!isCountDown && wildFetchedPokemon) {
+		return JSON.parse(wildFetchedPokemon).length
+	} else {
+		return '0'
+	}
 }
 
 const Home = () => {
@@ -53,7 +59,6 @@ const Home = () => {
 
 		calculateCountdown()
 		const intervalId = setInterval(calculateCountdown, 1000)
-
 		return () => clearInterval(intervalId)
 	}, [])
 
@@ -62,7 +67,7 @@ const Home = () => {
 			<div className='border-b-4 border-[#d2432e40] py-6'>
 				<div className='my-3 md:flex justify-between'>
 					<h2 className='text-center text-2xl md:text-4xl'>
-						{maxPokemon} Wild Pokemon Appeared
+						{maxPokemon} Wild Pokemon
 					</h2>
 					<span className='block text-lg text-gray-500 self-center'>
 						New Pokemon Appear In {countdown}
