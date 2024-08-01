@@ -15,7 +15,12 @@ const isCountDownExpired = () => {
 }
 
 const checksForWildPokemon = () => {
-	return localStorage.getItem('wildPokemon')
+	const wildPokemon = localStorage.getItem('wildPokemon')
+	if (!wildPokemon) {
+		return false
+	} else {
+		return wildPokemon
+	}
 }
 
 const getNumberOfWildPokemon = () => {
@@ -74,7 +79,11 @@ const Home = () => {
 					</span>
 				</div>
 			</div>
-			<WildPokemon saveToLocal='true' />
+			<WildPokemon
+				saveToLocal='true'
+				checksForWildPokemon={checksForWildPokemon()}
+				isCountDownExpired={isCountDownExpired()}
+			/>
 		</div>
 	)
 }

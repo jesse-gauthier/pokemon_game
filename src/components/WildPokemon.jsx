@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
+import RandomPasswordGenerator from '../utilities/RandomPasswordGenerator'
 import pokemonFetch from '../utilities/PokemonFetch'
 import PokemonCard from './PokemonCard'
 
@@ -9,20 +10,14 @@ class Pokemon {
 	constructor(name, img, id, base_experience) {
 		this.name = name
 		this.img = img
-		this.type = {} // Currently not used
 		this.id = id
 		this.xp = base_experience
 	}
 }
 
-// Function to get a random number between min and max (inclusive)
-const getRandomNumber = (min, max) => {
-	return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
 // Function to fetch a random Pokemon using the random ID
 const fetchRandomPokemon = async () => {
-	const randomId = getRandomNumber(1, 500)
+	const randomId = RandomPasswordGenerator(1, 500)
 	const data = await pokemonFetch(randomId)
 	return new Pokemon(
 		data.name,
@@ -33,12 +28,16 @@ const fetchRandomPokemon = async () => {
 }
 
 // Main component for fetching and displaying Pokemon
-const PokemonComponent = ({ saveToLocal }) => {
+const PokemonComponent = ({
+	saveToLocal,
+	checksForWildPokemon,
+	isCountDownExpired,
+}) => {
 	const [listOfWildPokemon, setListOfWildPokemon] = useState([])
 
 	// Function to fetch multiple Pokemon and update the state and localStorage if needed
 	const fetchMultiplePokemon = async () => {
-		const numberOfFetches = getRandomNumber(1, 10)
+		const numberOfFetches = RandomPasswordGenerator(1, 10)
 		try {
 			const fetchedPokemon = await Promise.all(
 				Array.from({ length: numberOfFetches }, () => fetchRandomPokemon())
@@ -58,35 +57,28 @@ const PokemonComponent = ({ saveToLocal }) => {
 	}
 
 	useEffect(() => {
-		// Function to check localStorage for stored Pokemon data
-		const checkLocalStorage = () => {
-			const storedPokemon = localStorage.getItem('wildPokemon')
-			const storedTimestamp = localStorage.getItem('pokemonTimestamp')
-
-			if (storedPokemon && storedTimestamp) {
-				const currentTime = Date.now()
-				const twelveHours = 12 * 60 * 60 * 1000
-
-				// Check if the stored data is within the last 12 hours
-				if (currentTime - storedTimestamp < twelveHours) {
-					setListOfWildPokemon(JSON.parse(storedPokemon))
-					return true
-				} else {
-					localStorage.removeItem('wildPokemon')
-					localStorage.removeItem('pokemonTimestamp')
-				}
+		const isSavedWildPokemon = () => {
+			if (checksForWildPokemon && isCountDownExpired) {
+				localStorage.removeItem('wildPokemon')
+				localStorage.removeItem('pokemonTimestamp')
+				return false
 			}
 
-			return false
+			if (checksForWildPokemon && !isCountDownExpired) {
+				setListOfWildPokemon(JSON.parse(checksForWildPokemon))
+				return true
+			} else {
+				return false
+			}
 		}
 
 		// Main function to fetch or load Pokemon
 		const main = async () => {
-			if (!checkLocalStorage()) {
+			if (!isSavedWildPokemon()) {
 				await fetchMultiplePokemon()
 				console.log('Pokemon fetched')
 			} else {
-				console.log('Loaded from localStorage')
+				return
 			}
 		}
 
