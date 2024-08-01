@@ -30,7 +30,7 @@ const CatchButton = ({ pokemon, onCatchRelease }) => {
 				JSON.stringify(updatedCaughtPokemon)
 			)
 			setIsCaught(false)
-			onCatchRelease(updatedCaughtPokemon)
+			onCatchRelease(pokemon.id)
 		} else {
 			// Add the Pokémon to caughtPokemon array
 			if (!caughtPokemon.some((p) => p.id === pokemon.id)) {

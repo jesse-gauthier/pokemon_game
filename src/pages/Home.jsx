@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import PokemonComponent from '../components/PokemonComponent'
+import WildPokemon from '../components/WildPokemon'
 
 const getNumberOfWildPokemon = () => {
 	const storedTimestamp = localStorage.getItem('pokemonTimestamp')
@@ -10,7 +10,7 @@ const getNumberOfWildPokemon = () => {
 		const expirationTime = parseInt(storedTimestamp, 10) + twelveHours
 
 		if (currentTime < expirationTime) {
-			const storedPokemon = localStorage.getItem('pokemonData')
+			const storedPokemon = localStorage.getItem('wildPokemon')
 			if (storedPokemon) {
 				const pokemonList = JSON.parse(storedPokemon)
 				if (pokemonList.length > 0) {
@@ -69,7 +69,7 @@ const Home = () => {
 					</span>
 				</div>
 			</div>
-			<PokemonComponent saveToLocal='true' />
+			<WildPokemon saveToLocal='true' />
 		</div>
 	)
 }

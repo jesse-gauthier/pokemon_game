@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { DebugContext } from './DebugContext'
 
 const clearWildPokemon = () => {
-	localStorage.removeItem('pokemonData')
+	localStorage.removeItem('wildPokemon')
 	localStorage.removeItem('pokemonTimestamp')
 	window.location.reload()
 }
