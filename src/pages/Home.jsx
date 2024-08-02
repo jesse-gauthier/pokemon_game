@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import WildPokemon from '../components/WildPokemon'
+import { Fireworks } from 'fireworks-js'
 
 const isCountDownExpired = () => {
 	const storedTimestamp = localStorage.getItem('pokemonTimestamp')
@@ -7,20 +8,12 @@ const isCountDownExpired = () => {
 	const currentTime = Date.now()
 	const expirationTime = parseInt(storedTimestamp, 10) + twelveHours
 
-	if (currentTime < expirationTime) {
-		return false
-	} else {
-		return true
-	}
+	return currentTime >= expirationTime
 }
 
 const checksForWildPokemon = () => {
 	const wildPokemon = localStorage.getItem('wildPokemon')
-	if (!wildPokemon) {
-		return false
-	} else {
-		return wildPokemon
-	}
+	return wildPokemon ? wildPokemon : false
 }
 
 const getNumberOfWildPokemon = () => {
@@ -38,6 +31,8 @@ const Home = () => {
 	const maxPokemon = getNumberOfWildPokemon()
 	const [countdown, setCountdown] = useState('')
 	const [pokemonCatch, setPokemonCatch] = useState({})
+	const fireworksContainerRef = useRef(null)
+	const dialogRef = useRef(null)
 
 	useEffect(() => {
 		const calculateCountdown = () => {
@@ -68,8 +63,52 @@ const Home = () => {
 		return () => clearInterval(intervalId)
 	}, [])
 
+	const startFireworks = useCallback(() => {
+		if (fireworksContainerRef.current) {
+			const fireworks = new Fireworks(fireworksContainerRef.current, {
+				autoresize: true,
+				opacity: 0.5,
+				acceleration: 1.05,
+				friction: 0.97,
+				gravity: 1.5,
+				particles: 50,
+				trace: 3,
+				explosion: 5,
+				boundaries: {
+					x: 0,
+					y: 0,
+					width: window.innerWidth,
+					height: window.innerHeight,
+				},
+				sound: {
+					enable: true,
+					files: [
+						'https://fireworks.js.org/sounds/explosion0.mp3',
+						'https://fireworks.js.org/sounds/explosion1.mp3',
+						'https://fireworks.js.org/sounds/explosion2.mp3',
+					],
+					volume: {
+						min: 4,
+						max: 8,
+					},
+				},
+			})
+
+			fireworks.start()
+			setTimeout(() => fireworks.stop(), 5000) // Stop fireworks after 5 seconds
+		}
+	}, [])
+
+	useEffect(() => {
+		const dialog = dialogRef.current
+		if (dialog) {
+			dialog.addEventListener('open', startFireworks)
+			return () => dialog.removeEventListener('open', startFireworks)
+		}
+	}, [startFireworks])
+
 	return (
-		<div className='pb-4'>
+		<div className='relative pb-4'>
 			<div className='border-b-4 border-[#d2432e40] py-6'>
 				<div className='my-3 md:flex justify-between'>
 					<h2 className='text-center text-2xl md:text-4xl'>
@@ -85,20 +124,27 @@ const Home = () => {
 				checksForWildPokemon={checksForWildPokemon()}
 				isCountDownExpired={isCountDownExpired()}
 				setPokemonCatch={setPokemonCatch}
+				startFireworks={startFireworks}
 			/>
 
-			<dialog id='success' className='modal'>
-				<div className='modal-box'>
+			<div
+				ref={fireworksContainerRef}
+				className='fixed inset-0 pointer-events-none z-0'
+			></div>
+
+			<dialog ref={dialogRef} id='success' className='modal z-10'>
+				<div className='modal-box border-[#ffcc5c] border-8'>
 					<div className='modal-action m-0'>
 						<form method='dialog'>
 							<button className='btn bg-[#2b0a1e] text-white'>Close</button>
 						</form>
 					</div>
 					<img className='mx-auto my-2' src={pokemonCatch.img} alt='' />
-
 					<p className='py-4 capitalize text-center text-2xl'>
-						Congrats, you caught{' '}
-						<span className='font-bold'>{pokemonCatch.name}!</span>
+						Congrats, you caught a wild{' '}
+						<span className='font-bold text-[#fe6f61]'>
+							{pokemonCatch.name}!
+						</span>
 					</p>
 				</div>
 			</dialog>

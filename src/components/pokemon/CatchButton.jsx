@@ -4,7 +4,12 @@ import { useState, useEffect, useRef } from 'react'
 
 // Add - when a pokemon is caught, a modal should appear with a firework like animation saying the pokemon was caught. Times out after x seconds
 
-const CatchButton = ({ pokemon, onCatchRelease, setPokemonCatch }) => {
+const CatchButton = ({
+	pokemon,
+	onCatchRelease,
+	setPokemonCatch,
+	startFireworks,
+}) => {
 	const [isCaught, setIsCaught] = useState(false)
 	const [isHolding, setIsHolding] = useState(false)
 	const [progress, setProgress] = useState(0)
@@ -50,6 +55,7 @@ const CatchButton = ({ pokemon, onCatchRelease, setPokemonCatch }) => {
 				setIsCaught(true)
 				onCatchRelease(pokemon.id)
 				document.getElementById('success').showModal()
+				startFireworks()
 			}
 		}
 	}

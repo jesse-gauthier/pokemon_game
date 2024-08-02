@@ -2,7 +2,12 @@
 
 import { Link } from 'react-router-dom'
 import CatchButton from './pokemon/CatchButton'
-const PokemonCard = ({ pokemon, onCatchRelease, setPokemonCatch }) => {
+const PokemonCard = ({
+	pokemon,
+	onCatchRelease,
+	setPokemonCatch,
+	startFireworks,
+}) => {
 	return (
 		<div
 			className={`border-[#FFCC5C] border-[13px] p-2 rounded-xl flex flex-col`}
@@ -25,6 +30,7 @@ const PokemonCard = ({ pokemon, onCatchRelease, setPokemonCatch }) => {
 					pokemon={pokemon}
 					onCatchRelease={onCatchRelease}
 					setPokemonCatch={setPokemonCatch}
+					startFireworks={startFireworks}
 				/>
 				<Link
 					to={`/pokemon/${pokemon.id}`}

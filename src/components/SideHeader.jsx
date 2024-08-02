@@ -5,7 +5,9 @@ const SideHeader = () => {
 	return (
 		<div className='w-[40dvw] md:w-[15%] h-screen bg-red-200'>
 			<header className='flex flex-col h-[100%]'>
-				<h1 className='text-center text-3xl font-bold my-8'>Pokemon App</h1>
+				<NavLink className='noactivestyle' to='/'>
+					<h1 className='text-center text-3xl font-bold my-8 '>Pokemon App</h1>
+				</NavLink>
 				<nav className='flex flex-col h-[85%]'>
 					<ul className='flex flex-col'>
 						<li className='flex flex-wrap gap-y-3 justify-end py-2'>

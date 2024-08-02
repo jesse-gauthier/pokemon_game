@@ -33,6 +33,7 @@ const PokemonComponent = ({
 	checksForWildPokemon,
 	isCountDownExpired,
 	setPokemonCatch,
+	startFireworks,
 }) => {
 	const [listOfWildPokemon, setListOfWildPokemon] = useState([])
 
@@ -113,6 +114,7 @@ const PokemonComponent = ({
 					pokemon={pokemon}
 					onCatchRelease={handlesRelease}
 					setPokemonCatch={setPokemonCatch}
+					startFireworks={startFireworks}
 				/>
 			))}
 		</div>

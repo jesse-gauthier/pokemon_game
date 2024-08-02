@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-.active {
+.active:not(.noactivestyle) {
 	background-color: #5e1743;
 	color: white;
 }
 
-.active:hover {
+.active:hover:not(.noactivestyle) {
 	background-color: #2b0a1e;
 	color: white;
 }

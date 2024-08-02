@@ -20,7 +20,9 @@ const CaughtPokemon = ({ usePokemonCatch }) => {
 	return (
 		<div className='py-4'>
 			<div className='flex justify-between border-b-4 border-[#d2432e40] py-6'>
-				<h2 className='text-center text-4xl my-2'>Caught Pokemon</h2>
+				<h2 className='text-center text-4xl'>
+					{caughtPokemon.length} Caught Pokemon
+				</h2>
 			</div>
 			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 py-4'>
 				{caughtPokemon.length > 0 ? (
