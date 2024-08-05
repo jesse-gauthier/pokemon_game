@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import WildPokemon from '../components/WildPokemon'
 import { Fireworks } from 'fireworks-js'
+import WildPokemon from '../components/WildPokemon'
+import FirstTimeModal from '../components/Tutorial/FirstTimeModal'
 
 const isCountDownExpired = () => {
 	const storedTimestamp = localStorage.getItem('pokemonTimestamp')
@@ -31,8 +32,21 @@ const Home = () => {
 	const maxPokemon = getNumberOfWildPokemon()
 	const [countdown, setCountdown] = useState('')
 	const [pokemonCatch, setPokemonCatch] = useState({})
+	const [firstTime, setFirstTime] = useState(false)
 	const fireworksContainerRef = useRef(null)
 	const dialogRef = useRef(null)
+
+	useEffect(() => {
+		const caughtPokemon = localStorage.getItem('caughtPokemon')
+		if (!caughtPokemon) {
+			setFirstTime(true)
+		} else {
+			const parsedCaughtPokemon = JSON.parse(caughtPokemon)
+			if (parsedCaughtPokemon.length === 1) {
+				setFirstTime(false)
+			}
+		}
+	}, [])
 
 	useEffect(() => {
 		const calculateCountdown = () => {
@@ -131,7 +145,7 @@ const Home = () => {
 				ref={fireworksContainerRef}
 				className='fixed inset-0 pointer-events-none z-0'
 			></div>
-
+			{/* Catch Card */}
 			<dialog ref={dialogRef} id='success' className='modal z-10'>
 				<div className='modal-box border-[#ffcc5c] border-8'>
 					<div className='modal-action m-0'>
@@ -147,7 +161,13 @@ const Home = () => {
 						</span>
 					</p>
 				</div>
+				<form method='dialog' className='modal-backdrop'>
+					<button>close</button>
+				</form>
 			</dialog>
+
+			{/* First Time */}
+			<FirstTimeModal firstTime={firstTime} />
 		</div>
 	)
 }

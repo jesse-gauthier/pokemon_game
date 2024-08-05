@@ -11,6 +11,7 @@ import Home from './pages/Home'
 import CaughtPokemon from './pages/CaughtPokemon'
 import SideHeader from './components/SideHeader'
 import PokemonDetails from './pages/PokemonDetails'
+import PokemonBattle from './pages/PokemonBattle'
 
 const App = () => {
 	return (
@@ -21,6 +22,7 @@ const App = () => {
 					<Routes>
 						<Route path='/' element={<Home />} />
 						<Route path='/caught_pokemon' element={<CaughtPokemon />} />
+						<Route path='/battle/:id' element={<PokemonBattle />} />
 						<Route path='/pokemon/:id' element={<PokemonDetails />} />
 						<Route path='*' element={<Navigate to='/' replace />} />
 					</Routes>

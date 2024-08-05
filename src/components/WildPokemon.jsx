@@ -115,6 +115,7 @@ const PokemonComponent = ({
 					onCatchRelease={handlesRelease}
 					setPokemonCatch={setPokemonCatch}
 					startFireworks={startFireworks}
+					isCaught={false}
 				/>
 			))}
 		</div>
