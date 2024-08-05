@@ -49,9 +49,8 @@ const PokemonCard = ({
 						startFireworks={startFireworks}
 					/>
 				)}
-				{caughtPokemon && caughtPokemon.length > 1 && !caughtStatus && (
-					<BattleButton pokemon={pokemon} />
-				)}
+				{(caughtPokemon && caughtPokemon.length > 1) ||
+					(!caughtStatus && <BattleButton pokemon={pokemon} />)}
 				<Link
 					to={`/pokemon/${pokemon.id}`}
 					className='bg-[#70c1b3] text-black btn self-center btn-outline capitalize md:w-[43%] w-[100%] text-lg font-normal'
