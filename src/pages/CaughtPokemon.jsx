@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react'
 import PokemonCard from '../components/PokemonCard'
-
 const CaughtPokemon = ({ usePokemonCatch }) => {
 	const [caughtPokemon, setCaughtPokemon] = useState([])
 
@@ -32,6 +31,7 @@ const CaughtPokemon = ({ usePokemonCatch }) => {
 							pokemon={pokemon}
 							onCatchRelease={handleCatchRelease}
 							usePokemonCatch={usePokemonCatch}
+							isCaught={true}
 						/>
 					))
 				) : (
