@@ -3,7 +3,13 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ActionButton from './Battle_System/ActionButton'
 
-const PokemonCard = ({ pokemon, isCaught }) => {
+const PokemonCard = ({
+	pokemon,
+	isCaught,
+	handlesRelease,
+	onFirstCatch,
+	startFireworks,
+}) => {
 	const [caughtStatus, setCaughtStatus] = useState(isCaught)
 
 	useEffect(() => {
@@ -25,7 +31,13 @@ const PokemonCard = ({ pokemon, isCaught }) => {
 				alt={pokemon.name}
 			/>
 			<div className='flex flex-wrap md:flex-nowrap justify-evenly gap-y-2'>
-				<ActionButton pokemon={pokemon} isCaught={caughtStatus} />
+				<ActionButton
+					pokemon={pokemon}
+					isCaught={caughtStatus}
+					handlesRelease={handlesRelease}
+					onFirstCatch={onFirstCatch}
+					startFireworks={startFireworks}
+				/>
 				<Link
 					to={`/pokemon/${pokemon.id}`}
 					className='bg-[#70c1b3] text-black btn self-center btn-outline capitalize md:w-[43%] w-[100%] text-lg font-normal'

@@ -103,6 +103,22 @@ const PokemonComponent = ({
 		localStorage.setItem('wildPokemon', JSON.stringify(updatedPokemon))
 	}
 
+	// Function to handle the first catch of a Pokemon
+	const handlesFirstCatch = (pokemon) => {
+		// Retrieve the caughtPokemon array from local storage or initialize it
+		let caughtPokemon = JSON.parse(localStorage.getItem('caughtPokemon')) || []
+
+		// Add the new Pokemon to the caughtPokemon array
+		caughtPokemon.push(pokemon)
+
+		// Save the updated array back to local storage
+		localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon))
+
+		// Update the state with the new caught Pokemon
+		setPokemonCatch(caughtPokemon)
+		startFireworks()
+	}
+
 	return (
 		<div
 			className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 py-4'
@@ -113,6 +129,7 @@ const PokemonComponent = ({
 					key={pokemon.id}
 					pokemon={pokemon}
 					onCatchRelease={handlesRelease}
+					onFirstCatch={handlesFirstCatch}
 					setPokemonCatch={setPokemonCatch}
 					startFireworks={startFireworks}
 					isCaught={false}

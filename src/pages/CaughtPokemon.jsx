@@ -11,8 +11,17 @@ const CaughtPokemon = ({ usePokemonCatch }) => {
 		setCaughtPokemon(storedCaughtPokemon)
 	}, [])
 
-	const handleCatchRelease = () => {
-		const caughtPokemon = JSON.parse(localStorage.getItem('caughtPokemon'))
+	const handlesRelease = (pokemon) => {
+		// Retrieve the caughtPokemon array from local storage
+		let caughtPokemon = JSON.parse(localStorage.getItem('caughtPokemon')) || []
+
+		// Filter out the Pokémon with the matching id
+		caughtPokemon = caughtPokemon.filter((p) => p.id !== pokemon.id)
+
+		// Save the updated array back to local storage
+		localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon))
+
+		// Update the state with the updated array
 		setCaughtPokemon(caughtPokemon)
 	}
 
@@ -29,7 +38,7 @@ const CaughtPokemon = ({ usePokemonCatch }) => {
 						<PokemonCard
 							key={pokemon.id}
 							pokemon={pokemon}
-							onCatchRelease={handleCatchRelease}
+							handlesRelease={handlesRelease}
 							usePokemonCatch={usePokemonCatch}
 							isCaught={true}
 						/>
