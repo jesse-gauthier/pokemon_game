@@ -116,6 +116,17 @@ const PokemonComponent = ({
 
 		// Update the state with the new caught Pokemon
 		setPokemonCatch(caughtPokemon)
+
+		// Remove the caught Pokemon from the listOfWildPokemon
+		setListOfWildPokemon((prevList) =>
+			prevList.filter((p) => p.id !== pokemon.id)
+		)
+
+		// Update the localStorage to remove the Pokemon
+		const storedPokemon = JSON.parse(localStorage.getItem('wildPokemon')) || []
+		const updatedPokemon = storedPokemon.filter((p) => p.id !== pokemon.id)
+		localStorage.setItem('wildPokemon', JSON.stringify(updatedPokemon))
+
 		startFireworks()
 	}
 
