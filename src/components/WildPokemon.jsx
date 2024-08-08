@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
-import RandomPasswordGenerator from '../utilities/RandomPasswordGenerator'
+import RandomNumberGenerator from '../utilities/RandomNumberGenerator'
 import pokemonFetch from '../utilities/PokemonFetch'
 import PokemonCard from './PokemonCard'
 
@@ -17,7 +17,7 @@ class Pokemon {
 
 // Function to fetch a random Pokemon using the random ID
 const fetchRandomPokemon = async () => {
-	const randomId = RandomPasswordGenerator(1, 500)
+	const randomId = RandomNumberGenerator(1, 500)
 	const data = await pokemonFetch(randomId)
 	return new Pokemon(
 		data.name,
@@ -39,7 +39,7 @@ const PokemonComponent = ({
 
 	// Function to fetch multiple Pokemon and update the state and localStorage if needed
 	const fetchMultiplePokemon = async () => {
-		const numberOfFetches = RandomPasswordGenerator(1, 10)
+		const numberOfFetches = RandomNumberGenerator(1, 10)
 		try {
 			const fetchedPokemon = await Promise.all(
 				Array.from({ length: numberOfFetches }, () => fetchRandomPokemon())

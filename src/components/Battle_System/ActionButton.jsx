@@ -1,13 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom'
 
-const ActionButton = ({
-	pokemon,
-	isCaught,
-	handlesRelease,
-	onFirstCatch,
-	startFireworks,
-}) => {
+const ActionButton = ({ pokemon, isCaught, handlesRelease, onFirstCatch }) => {
 	// Function to trigger the release action
 	const triggerRelease = (pokemon) => {
 		handlesRelease(pokemon)
@@ -25,7 +19,7 @@ const ActionButton = ({
 	return isFirstCatch ? (
 		<button
 			onClick={() => onFirstCatch(pokemon)}
-			className='bg-[#70c1b3] text-black btn self-center btn-outline capitalize md:w-[43%] w-[100%] text-lg font-normal'
+			className='bg-[#70c1b3] text-black btn self-center btn-outline capitalize md:w-[43%] w-[100%] text-lg btn-lg font-normal'
 		>
 			First Catch
 		</button>

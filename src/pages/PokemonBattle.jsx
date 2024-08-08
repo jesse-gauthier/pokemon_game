@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import pokemonFetch from '../utilities/PokemonFetch'
 import BattleCard from '../components/Battle_System/BattleCard'
-import PokemonCard from '../components/PokemonCard'
-import PokemonContainer from '../components/Battle_System/PokemonContainer'
 
 const PokemonBattle = () => {
 	const { id } = useParams()
 	const [AttackPokemon, setPokemon] = useState(null)
+	const [DefendPokemon, setDefendPokemon] = useState([])
 
 	useEffect(() => {
 		const fetchPokemon = async () => {
@@ -22,6 +21,14 @@ const PokemonBattle = () => {
 		fetchPokemon()
 	}, [id])
 
+	useEffect(() => {
+		const fetchCaughtPokemon = () => {
+			const caughtPokemon = localStorage.getItem('caughtPokemon')
+			return caughtPokemon ? JSON.parse(caughtPokemon) : []
+		}
+		setDefendPokemon(fetchCaughtPokemon())
+	}, [])
+	console.log(DefendPokemon)
 	if (!AttackPokemon) {
 		return <div>Loading...</div>
 	}
@@ -33,8 +40,11 @@ const PokemonBattle = () => {
 				<div className='flex md:flex-col flex-wrap justify-center'>
 					{/* Attack Pokemon */}
 					<BattleCard pokemon={AttackPokemon} />
-					{/* Defend Pokemon */}
-					<PokemonContainer />
+					<div className='mt-14'>
+						{DefendPokemon.map((pokemon, index) => (
+							<BattleCard key={index} pokemon={pokemon} defend={true} />
+						))}
+					</div>
 				</div>
 			</div>
 		</div>
