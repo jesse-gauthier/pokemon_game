@@ -9,6 +9,7 @@ const ActiveBattle = () => {
 	const [defend, setDefend] = useState(null)
 	const [attackXp, setAttackXp] = useState(null)
 	const [defendXp, setDefendXp] = useState(null)
+	const [attackResult, setAttackResult] = useState(' ')
 
 	let { attackid, defendid } = useParams()
 
@@ -67,9 +68,24 @@ const ActiveBattle = () => {
 		}
 	}, [attackid, defendid])
 
-	const attackMove = (move) => {
+	const playerAttackMove = (move) => {
 		const result = wasAttackSuccess(move)
-		console.log(result)
+
+		if (result) {
+			let hitPointsLost = move.power
+			const remainingXp = attackXp - hitPointsLost
+			setAttackXp(remainingXp)
+			console.log(remainingXp)
+			if (remainingXp < 1) {
+				console.log('pokemon caught')
+				setAttackXp('0')
+				setAttackResult(`Pokemon Caught`)
+			} else {
+				setAttackResult(`SUCCESS HIT`)
+			}
+		} else {
+			setAttackResult(`MOVE MISSED`)
+		}
 	}
 
 	return (
@@ -77,6 +93,9 @@ const ActiveBattle = () => {
 			<h1>Active Battle</h1>
 			<div className='flex justify-between'>
 				<div>{attack && <BattleCard pokemon={attack} xp={attackXp} />}</div>
+				<div className='self-center capitalize text-5xl font-bold'>
+					{attackResult}
+				</div>
 				<div>
 					{defend && <BattleCard pokemon={defend} xp={defendXp} />}
 					<div className='sidebar'>
@@ -87,7 +106,7 @@ const ActiveBattle = () => {
 									.slice(0, 5)
 									.map((move, index) => (
 										<button
-											onClick={() => attackMove(move)}
+											onClick={() => playerAttackMove(move)}
 											key={index}
 											className='col-span-2 btn btn-success text-white'
 										>

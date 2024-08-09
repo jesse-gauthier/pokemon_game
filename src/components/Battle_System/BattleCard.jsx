@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 const BattleCard = ({ pokemon, attack, assignChoosenPokemon, xp }) => {
-	console.log(pokemon)
 	return (
 		<div className='card border-[#FFCC5C] border-[13px] w-96 shadow-xl py-4'>
 			<figure className='p-4'>

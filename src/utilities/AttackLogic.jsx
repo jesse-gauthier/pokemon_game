@@ -1,9 +1,10 @@
 export default function wasAttackSuccess(move) {
-	const result = false
-	console.log(move.name)
-	console.log(move.power)
-	console.log(move.accuracy)
-	// Create a alg to decide if the move was a success for not.
+	// Generate a random number between 0 and 100
+	const randomValue = Math.random() * 100
+
+	// Check if the random value is less than or equal to the accuracy
+	const result = randomValue <= move.accuracy
+	console.log(`Was Attack Successful: ${result}`)
 
 	return result
 }
