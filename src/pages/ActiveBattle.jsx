@@ -75,11 +75,32 @@ const ActiveBattle = () => {
 			let hitPointsLost = move.power
 			const remainingXp = attackXp - hitPointsLost
 			setAttackXp(remainingXp)
-			console.log(remainingXp)
+
 			if (remainingXp < 1) {
 				console.log('pokemon caught')
 				setAttackXp('0')
 				setAttackResult(`Pokemon Caught`)
+
+				// Check local storage for caughtPokemon
+				let caughtPokemon =
+					JSON.parse(localStorage.getItem('caughtPokemon')) || []
+
+				// Add the caught Pokémon to the array
+				caughtPokemon.push(attack)
+
+				// Resave the updated array back to local storage
+				localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon))
+
+				// Check local storage for wildPokemon
+				let wildPokemon = JSON.parse(localStorage.getItem('wildPokemon')) || []
+
+				// Remove the caught Pokémon from wildPokemon array
+				wildPokemon = wildPokemon.filter(
+					(pokemon) => pokemon.name !== attack.name
+				)
+
+				// Resave the updated wildPokemon array back to local storage
+				localStorage.setItem('wildPokemon', JSON.stringify(wildPokemon))
 			} else {
 				setAttackResult(`SUCCESS HIT`)
 			}
