@@ -18,7 +18,7 @@ export default async function pokemonFetch(id) {
 
 		// Extracting moves, abilities, held items, and types
 		const moves = data.moves.map((move) => move.move)
-		const abilities = data.abilities.map((ability) => ability.ability.name)
+		const abilities = data.abilities.map((ability) => ability.ability)
 		const held_items = data.held_items.map((item) => item.item.name)
 		const types = data.types.map((type) => type.type.name)
 
