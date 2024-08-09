@@ -1,11 +1,15 @@
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import BattleCard from '../components/Battle_System/BattleCard'
-import fetchFromUrl from '../utilities/MovesFetch'
+// import fetchFromUrl from '../utilities/MovesFetch'
+import wasAttackSuccess from '../utilities/AttackLogic'
 
 const ActiveBattle = () => {
 	const [attack, setAttack] = useState(null)
 	const [defend, setDefend] = useState(null)
+	const [attackXp, setAttackXp] = useState(null)
+	const [defendXp, setDefendXp] = useState(null)
+
 	let { attackid, defendid } = useParams()
 
 	// fetches local storage wildPokemon, filters to find matching pokemon by id
@@ -17,6 +21,7 @@ const ActiveBattle = () => {
 			)
 			if (matchedPokemon) {
 				setAttack(matchedPokemon)
+				setAttackXp(matchedPokemon.xp)
 			} else {
 				console.log('No attack Pokemon found with the given attackId')
 			}
@@ -34,6 +39,7 @@ const ActiveBattle = () => {
 			)
 			if (matchedPokemon) {
 				setDefend(matchedPokemon)
+				setDefendXp(matchedPokemon.xp)
 			} else {
 				console.log('No defend Pokemon found with the given defendId')
 			}
@@ -61,13 +67,18 @@ const ActiveBattle = () => {
 		}
 	}, [attackid, defendid])
 
+	const attackMove = (move) => {
+		const result = wasAttackSuccess(move)
+		console.log(result)
+	}
+
 	return (
 		<div>
 			<h1>Active Battle</h1>
 			<div className='flex justify-between'>
-				<div>{attack && <BattleCard pokemon={attack} />}</div>
+				<div>{attack && <BattleCard pokemon={attack} xp={attackXp} />}</div>
 				<div>
-					{defend && <BattleCard pokemon={defend} />}
+					{defend && <BattleCard pokemon={defend} xp={defendXp} />}
 					<div className='sidebar'>
 						<h3 className='text-center my-4 text-2xl'>Select Your Move</h3>
 						<div className='grid grid-cols-4 gap-3'>
@@ -76,7 +87,7 @@ const ActiveBattle = () => {
 									.slice(0, 5)
 									.map((move, index) => (
 										<button
-											onClick={() => fetchFromUrl(move.url)}
+											onClick={() => attackMove(move)}
 											key={index}
 											className='col-span-2 btn btn-success text-white'
 										>

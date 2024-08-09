@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const BattleCard = ({ pokemon, attack, assignChoosenPokemon }) => {
+const BattleCard = ({ pokemon, attack, assignChoosenPokemon, xp }) => {
 	console.log(pokemon)
 	return (
 		<div className='card border-[#FFCC5C] border-[13px] w-96 shadow-xl py-4'>
@@ -9,10 +9,13 @@ const BattleCard = ({ pokemon, attack, assignChoosenPokemon }) => {
 					alt={pokemon.name}
 				/>
 			</figure>
-			<div className='card-body mx-auto'>
-				<h2 className='text-3xl card-title text-center capitalize'>
+			<div className='flex justify-between px-3'>
+				<h2 className='self-center text-3xl card-title text-center capitalize'>
 					{pokemon.name}
 				</h2>
+				<h3 className='self-center  text-xl card-title text-center capitalize'>
+					Health: {xp}
+				</h3>
 			</div>
 			<div className='flex justify-evenly'>
 				{attack && (
