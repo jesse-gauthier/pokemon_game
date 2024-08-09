@@ -5,26 +5,11 @@ import RandomNumberGenerator from '../utilities/RandomNumberGenerator'
 import pokemonFetch from '../utilities/PokemonFetch'
 import PokemonCard from './PokemonCard'
 
-// Class representing a Pokemon with basic attributes
-class Pokemon {
-	constructor(name, img, id, base_experience) {
-		this.name = name
-		this.img = img
-		this.id = id
-		this.xp = base_experience
-	}
-}
-
 // Function to fetch a random Pokemon using the random ID
 const fetchRandomPokemon = async () => {
 	const randomId = RandomNumberGenerator(1, 500)
 	const data = await pokemonFetch(randomId)
-	return new Pokemon(
-		data.name,
-		data.sprites.other.dream_world.front_default,
-		data.id,
-		data.base_experience
-	)
+	return data
 }
 
 // Main component for fetching and displaying Pokemon

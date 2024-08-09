@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-const BattleCard = ({ pokemon }) => {
+const BattleCard = ({ pokemon, attack, assignChoosenPokemon }) => {
+	console.log(pokemon)
 	return (
 		<div className='card border-[#FFCC5C] border-[13px] w-96 shadow-xl py-4'>
 			<figure className='p-4'>
@@ -14,8 +15,14 @@ const BattleCard = ({ pokemon }) => {
 				</h2>
 			</div>
 			<div className='flex justify-evenly'>
-				<button className='btn btn-outline w-1/3'>Select</button>
-				<button className='btn btn-warning w-1/3'>View</button>
+				{attack && (
+					<button
+						onClick={() => assignChoosenPokemon(pokemon)}
+						className='btn btn-outline w-1/3'
+					>
+						Select
+					</button>
+				)}
 			</div>
 		</div>
 	)

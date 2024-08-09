@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import pokemonFetch from '../utilities/PokemonFetch'
 import BattleCard from '../components/Battle_System/BattleCard'
+import { Link } from 'react-router-dom'
 
-const PokemonBattle = () => {
+const BattleStagging = () => {
 	const { id } = useParams()
 	const [AttackPokemon, setPokemon] = useState(null)
 	const [DefendPokemon, setDefendPokemon] = useState([])
+	const [ChoosenPokemon, setChoosenPokemon] = useState([])
 
 	useEffect(() => {
 		const fetchPokemon = async () => {
@@ -17,7 +19,6 @@ const PokemonBattle = () => {
 				console.error('Failed to fetch pokemon:', error)
 			}
 		}
-
 		fetchPokemon()
 	}, [id])
 
@@ -28,7 +29,10 @@ const PokemonBattle = () => {
 		}
 		setDefendPokemon(fetchCaughtPokemon())
 	}, [])
-	console.log(DefendPokemon)
+
+	const assignChoosenPokemon = (pokemon) => {
+		setChoosenPokemon(pokemon)
+	}
 	if (!AttackPokemon) {
 		return <div>Loading...</div>
 	}
@@ -38,11 +42,33 @@ const PokemonBattle = () => {
 			<h2 className='text-6xl font-bold text-center mt-5'>Prepare to Battle</h2>
 			<div className='flex flex-col justify-center'>
 				<div className='flex md:flex-col flex-wrap justify-center'>
-					{/* Attack Pokemon */}
-					<BattleCard pokemon={AttackPokemon} />
-					<div className='mt-14'>
+					<div className='flex justify-between'>
+						{/* Attack Pokemon */}
+						<BattleCard pokemon={AttackPokemon} />
+						<div className='self-center flex flex-wrap gap-5 justify-center'>
+							{/* <p className='font-bold text-8xl w-[100%] text-center'>VS</p> */}
+							{Object.keys(ChoosenPokemon).length >= 1 && (
+								<Link
+									to={`/battlegrounds/${AttackPokemon.id}/${ChoosenPokemon.id}`}
+									className='btn btn-lg btn-warning mt-auto min-w-[200px]'
+								>
+									Battle
+								</Link>
+							)}
+						</div>
+						{Object.keys(ChoosenPokemon).length >= 1 && (
+							<BattleCard pokemon={ChoosenPokemon} />
+						)}
+					</div>
+					<div className='mt-14 border-4 p-3 border-red-50'>
+						<h3 className='text-4xl font-bold text-center'>Your Pokemon</h3>
 						{DefendPokemon.map((pokemon, index) => (
-							<BattleCard key={index} pokemon={pokemon} defend={true} />
+							<BattleCard
+								key={index}
+								pokemon={pokemon}
+								attack={true}
+								assignChoosenPokemon={assignChoosenPokemon}
+							/>
 						))}
 					</div>
 				</div>
@@ -51,4 +77,4 @@ const PokemonBattle = () => {
 	)
 }
 
-export default PokemonBattle
+export default BattleStagging
