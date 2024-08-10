@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import BattleCard from '../components/Battle_System/BattleCard'
 // import fetchFromUrl from '../utilities/MovesFetch'
@@ -10,6 +10,7 @@ const ActiveBattle = () => {
 	const [attackXp, setAttackXp] = useState(null)
 	const [defendXp, setDefendXp] = useState(null)
 	const [attackResult, setAttackResult] = useState(' ')
+	const [defeat, setDefeat] = useState(false)
 
 	let { attackid, defendid } = useParams()
 
@@ -123,14 +124,15 @@ const ActiveBattle = () => {
 				const remainingXp = defendXp - hitPointsLost
 				setDefendXp(remainingXp)
 				if (remainingXp < 1) {
-					console.log('Defending Pokémon Fainted')
 					setDefendXp('0')
-					setAttackResult(`Your Pokémon Fainted`)
+					setAttackResult(`${attack.name} ${computerMove.name}: SUCCESS HIT`)
+					setTimeout(() => setAttackResult(`Your Pokemon Fainted`), 800)
+					setDefeat(true)
 				} else {
-					setAttackResult(`Computer's Attack: SUCCESS HIT`)
+					setAttackResult(`${attack.name} ${computerMove.name}: SUCCESS HIT`)
 				}
 			} else {
-				setAttackResult(`Computer's Attack: MOVE MISSED`)
+				setAttackResult(`${attack.name} ${computerMove.name}: MISSED`)
 			}
 		}
 	}
@@ -140,8 +142,13 @@ const ActiveBattle = () => {
 			<h1 className='text-6xl font-bold text-center mt-5'>Active Battle</h1>
 			<div className='flex justify-between'>
 				<div>{attack && <BattleCard pokemon={attack} xp={attackXp} />}</div>
-				<div className='self-center capitalize text-5xl font-bold'>
+				<div className='flex flex-col self-center capitalize text-5xl font-bold'>
 					{attackResult}
+					{defeat && (
+						<Link to='/' className='btn btn-error w-fit mx-auto mt-5'>
+							Run Away
+						</Link>
+					)}
 				</div>
 				<div>
 					{defend && <BattleCard pokemon={defend} xp={defendXp} />}
@@ -153,6 +160,7 @@ const ActiveBattle = () => {
 									.slice(0, 5)
 									.map((move, index) => (
 										<button
+											disabled={defeat}
 											onClick={() => playerAttackMove(move)}
 											key={index}
 											className='col-span-2 btn btn-success text-white'
