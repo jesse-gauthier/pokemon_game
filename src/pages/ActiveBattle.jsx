@@ -103,15 +103,41 @@ const ActiveBattle = () => {
 				localStorage.setItem('wildPokemon', JSON.stringify(wildPokemon))
 			} else {
 				setAttackResult(`SUCCESS HIT`)
+				computerAttackMove() // Trigger computer attack after player move
 			}
 		} else {
 			setAttackResult(`MOVE MISSED`)
+			computerAttackMove() // Trigger computer attack even if player misses
+		}
+	}
+
+	const computerAttackMove = () => {
+		if (attack && attack.moves && attack.moves.length > 0) {
+			// Randomly select one of the first 5 moves
+			const computerMove = shuffleArray(attack.moves).slice(0, 5)[0]
+			console.log(computerMove)
+			const result = wasAttackSuccess(computerMove)
+
+			if (result) {
+				let hitPointsLost = computerMove.power
+				const remainingXp = defendXp - hitPointsLost
+				setDefendXp(remainingXp)
+				if (remainingXp < 1) {
+					console.log('Defending Pokémon Fainted')
+					setDefendXp('0')
+					setAttackResult(`Your Pokémon Fainted`)
+				} else {
+					setAttackResult(`Computer's Attack: SUCCESS HIT`)
+				}
+			} else {
+				setAttackResult(`Computer's Attack: MOVE MISSED`)
+			}
 		}
 	}
 
 	return (
 		<div>
-			<h1>Active Battle</h1>
+			<h1 className='text-6xl font-bold text-center mt-5'>Active Battle</h1>
 			<div className='flex justify-between'>
 				<div>{attack && <BattleCard pokemon={attack} xp={attackXp} />}</div>
 				<div className='self-center capitalize text-5xl font-bold'>

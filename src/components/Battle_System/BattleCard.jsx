@@ -8,7 +8,7 @@ const BattleCard = ({ pokemon, attack, assignChoosenPokemon, xp }) => {
 					alt={pokemon.name}
 				/>
 			</figure>
-			<div className='flex justify-between px-3'>
+			<div className='flex justify-evenly px-3 mt-auto'>
 				<h2 className='self-center text-3xl card-title text-center capitalize'>
 					{pokemon.name}
 				</h2>

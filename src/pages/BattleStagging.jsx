@@ -44,7 +44,7 @@ const BattleStagging = () => {
 				<div className='flex md:flex-col flex-wrap justify-center'>
 					<div className='flex justify-between'>
 						{/* Attack Pokemon */}
-						<BattleCard pokemon={AttackPokemon} />
+						<BattleCard pokemon={AttackPokemon} xp={AttackPokemon.xp} />
 						<div className='self-center flex flex-wrap gap-5 justify-center'>
 							{/* <p className='font-bold text-8xl w-[100%] text-center'>VS</p> */}
 							{Object.keys(ChoosenPokemon).length >= 1 && (
@@ -57,19 +57,22 @@ const BattleStagging = () => {
 							)}
 						</div>
 						{Object.keys(ChoosenPokemon).length >= 1 && (
-							<BattleCard pokemon={ChoosenPokemon} />
+							<BattleCard pokemon={ChoosenPokemon} xp={ChoosenPokemon.xp} />
 						)}
 					</div>
 					<div className='mt-14 border-4 p-3 border-red-50'>
 						<h3 className='text-4xl font-bold text-center'>Your Pokemon</h3>
-						{DefendPokemon.map((pokemon, index) => (
-							<BattleCard
-								key={index}
-								pokemon={pokemon}
-								attack={true}
-								assignChoosenPokemon={assignChoosenPokemon}
-							/>
-						))}
+						<div className='flex justify-evenly mt-4'>
+							{DefendPokemon.map((pokemon, index) => (
+								<BattleCard
+									xp={pokemon.xp}
+									key={index}
+									pokemon={pokemon}
+									attack={true}
+									assignChoosenPokemon={assignChoosenPokemon}
+								/>
+							))}
+						</div>
 					</div>
 				</div>
 			</div>
