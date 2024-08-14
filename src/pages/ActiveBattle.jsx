@@ -118,7 +118,6 @@ const ActiveBattle = () => {
 		if (attack && attack.moves && attack.moves.length > 0) {
 			// Randomly select one of the first 5 moves
 			const computerMove = shuffleArray(attack.moves).slice(0, 5)[0]
-
 			const result = wasAttackSuccess(computerMove)
 
 			if (result) {
@@ -143,7 +142,27 @@ const ActiveBattle = () => {
 		<div>
 			<h1 className='text-6xl font-bold text-center mt-5'>Active Battle</h1>
 			<div className='flex justify-between'>
-				<div>{attack && <BattleCard pokemon={attack} xp={attackXp} />}</div>
+				<div>
+					{attack && <BattleCard pokemon={attack} xp={attackXp} />}
+					<h3>Enemy Moves</h3>
+					<div className='grid grid-cols-4 gap-3 mt-5'>
+						{attack && attack.moves && attack.moves.length > 0 ? (
+							shuffleArray(attack.moves)
+								.slice(0, 5)
+								.map((move, index) => (
+									<button
+										disabled
+										key={index}
+										className='col-span-2 btn btn-success text-white'
+									>
+										{move.name}
+									</button>
+								))
+						) : (
+							<p>No moves available</p>
+						)}
+					</div>
+				</div>
 				<div className='flex flex-col self-center capitalize text-5xl font-bold'>
 					{attackResult}
 					{defeat && (
