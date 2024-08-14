@@ -62,7 +62,7 @@ const BattleStagging = () => {
 					</div>
 					<div className='mt-14 border-4 p-3 border-red-50'>
 						<h3 className='text-4xl font-bold text-center'>Your Pokemon</h3>
-						<div className='flex justify-evenly mt-4'>
+						<div className='flex flex-wrap justify-evenly mt-4 gap-y-4'>
 							{DefendPokemon.map((pokemon, index) => (
 								<BattleCard
 									xp={pokemon.xp}

@@ -9,8 +9,9 @@ const ActiveBattle = () => {
 	const [defend, setDefend] = useState(null)
 	const [attackXp, setAttackXp] = useState(null)
 	const [defendXp, setDefendXp] = useState(null)
-	const [attackResult, setAttackResult] = useState(' ')
+	const [attackResult, setAttackResult] = useState('')
 	const [defeat, setDefeat] = useState(false)
+	const [win, setWin] = useState(false)
 
 	let { attackid, defendid } = useParams()
 
@@ -81,6 +82,7 @@ const ActiveBattle = () => {
 				console.log('pokemon caught')
 				setAttackXp('0')
 				setAttackResult(`Pokemon Caught`)
+				setWin(true)
 
 				// Check local storage for caughtPokemon
 				let caughtPokemon =
@@ -116,7 +118,7 @@ const ActiveBattle = () => {
 		if (attack && attack.moves && attack.moves.length > 0) {
 			// Randomly select one of the first 5 moves
 			const computerMove = shuffleArray(attack.moves).slice(0, 5)[0]
-			console.log(computerMove)
+
 			const result = wasAttackSuccess(computerMove)
 
 			if (result) {
@@ -160,7 +162,7 @@ const ActiveBattle = () => {
 									.slice(0, 5)
 									.map((move, index) => (
 										<button
-											disabled={defeat}
+											disabled={defeat || win}
 											onClick={() => playerAttackMove(move)}
 											key={index}
 											className='col-span-2 btn btn-success text-white'
