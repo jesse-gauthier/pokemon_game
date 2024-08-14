@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import pokemonFetch from '../utilities/PokemonFetch'
 import BattleCard from '../components/Battle_System/BattleCard'
+import VerticalCarousel from '../components/Battle_System/VerticalCarousel'
 import { Link } from 'react-router-dom'
 
 const BattleStagging = () => {
 	const { id } = useParams()
 	const [AttackPokemon, setPokemon] = useState(null)
 	const [DefendPokemon, setDefendPokemon] = useState([])
-	const [ChoosenPokemon, setChoosenPokemon] = useState([])
+	const [ChoosenPokemon, setChoosenPokemon] = useState({})
 
 	useEffect(() => {
 		const fetchPokemon = async () => {
@@ -22,6 +23,11 @@ const BattleStagging = () => {
 		fetchPokemon()
 	}, [id])
 
+	const assignChoosenPokemon = (pokemon) => {
+		console.log('Selected Pokemon:', pokemon)
+		setChoosenPokemon(pokemon)
+	}
+
 	useEffect(() => {
 		const fetchCaughtPokemon = () => {
 			const caughtPokemon = localStorage.getItem('caughtPokemon')
@@ -30,49 +36,44 @@ const BattleStagging = () => {
 		setDefendPokemon(fetchCaughtPokemon())
 	}, [])
 
-	const assignChoosenPokemon = (pokemon) => {
-		setChoosenPokemon(pokemon)
-	}
 	if (!AttackPokemon) {
 		return <div>Loading...</div>
 	}
 
 	return (
-		<div className='pt-5 flex flex-col gap-16'>
+		<div className='pt-5 flex flex-col gap-4'>
 			<h2 className='text-6xl font-bold text-center mt-5'>Prepare to Battle</h2>
 			<div className='flex flex-col justify-center'>
-				<div className='flex md:flex-col flex-wrap justify-center'>
-					<div className='flex justify-between'>
-						{/* Attack Pokemon */}
-						<BattleCard pokemon={AttackPokemon} xp={AttackPokemon.xp} />
-						<div className='self-center flex flex-wrap gap-5 justify-center'>
-							{/* <p className='font-bold text-8xl w-[100%] text-center'>VS</p> */}
+				<div className='flex justify-evenly'>
+					{/* Staging Section */}
+					<div className='my-auto'>
+						<div className='flex gap-4'>
+							{/* Attack Pokemon */}
+							<BattleCard pokemon={AttackPokemon} xp={AttackPokemon.xp} />
+							{/* Start Button */}
 							{Object.keys(ChoosenPokemon).length >= 1 && (
 								<Link
 									to={`/battlegrounds/${AttackPokemon.id}/${ChoosenPokemon.id}`}
-									className='btn btn-lg btn-warning mt-auto min-w-[200px]'
+									className='btn btn-lg btn-warning min-w-[200px] self-center'
 								>
 									Battle
 								</Link>
 							)}
+							{/* Choosen Pokemon */}
+							{Object.keys(ChoosenPokemon).length >= 1 && (
+								<BattleCard pokemon={ChoosenPokemon} xp={ChoosenPokemon.xp} />
+							)}
 						</div>
-						{Object.keys(ChoosenPokemon).length >= 1 && (
-							<BattleCard pokemon={ChoosenPokemon} xp={ChoosenPokemon.xp} />
-						)}
 					</div>
-					<div className='mt-14 border-4 p-3 border-red-50'>
-						<h3 className='text-4xl font-bold text-center'>Your Pokemon</h3>
-						<div className='flex flex-wrap justify-evenly mt-4 gap-y-4'>
-							{DefendPokemon.map((pokemon, index) => (
-								<BattleCard
-									xp={pokemon.xp}
-									key={index}
-									pokemon={pokemon}
-									attack={true}
-									assignChoosenPokemon={assignChoosenPokemon}
-								/>
-							))}
-						</div>
+					{/* List of Pokemon to choose from (caught) */}
+					<div className=''>
+						<h3 className='text-4xl font-bold text-center'>
+							Choose Your Pokemon
+						</h3>
+						<VerticalCarousel
+							DefendPokemon={DefendPokemon}
+							assignPokemon={assignChoosenPokemon}
+						/>
 					</div>
 				</div>
 			</div>

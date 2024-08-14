@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 
 /* eslint-disable react/prop-types */
-const BattleCard = ({ pokemon, attack, assignChoosenPokemon, xp }) => {
+const BattleCard = ({ pokemon, attack, handlesSelect, xp }) => {
 	const [displayedXp, setDisplayedXp] = useState(xp)
+	const [selected, setSelected] = useState(false)
 
 	useEffect(() => {
 		const start = displayedXp
@@ -29,8 +30,13 @@ const BattleCard = ({ pokemon, attack, assignChoosenPokemon, xp }) => {
 		}
 	}, [xp, displayedXp])
 
+	function selectPokemon() {
+		handlesSelect(pokemon)
+		setSelected(true)
+	}
+
 	return (
-		<div className='card border-[#FFCC5C] border-[13px] w-96 shadow-xl py-4'>
+		<div className='card border-[#FFCC5C] border-[13px] shadow-xl py-4'>
 			<figure className='p-4'>
 				<img
 					src={pokemon.img || pokemon.sprites.other.dream_world.front_default}
@@ -48,8 +54,10 @@ const BattleCard = ({ pokemon, attack, assignChoosenPokemon, xp }) => {
 			<div className='flex justify-evenly'>
 				{attack && (
 					<button
-						onClick={() => assignChoosenPokemon(pokemon)}
-						className='btn btn-outline w-1/3'
+						onClick={selectPokemon}
+						className={`btn w-1/3 ${
+							selected ? 'bg-blue-900 text-white' : 'btn-outline'
+						}`}
 					>
 						Select
 					</button>
