@@ -59,10 +59,6 @@ const BattleStagging = () => {
 									Battle
 								</Link>
 							)}
-							{/* Choosen Pokemon */}
-							{Object.keys(ChoosenPokemon).length >= 1 && (
-								<BattleCard pokemon={ChoosenPokemon} xp={ChoosenPokemon.xp} />
-							)}
 						</div>
 					</div>
 					{/* List of Pokemon to choose from (caught) */}

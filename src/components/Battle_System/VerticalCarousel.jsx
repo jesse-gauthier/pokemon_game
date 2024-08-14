@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import BattleCard from './BattleCard'
 import { useState, useEffect } from 'react'
 
